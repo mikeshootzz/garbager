@@ -4,7 +4,7 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-polling_url: "https://openerz.metaodi.ch/api/calendar.json?region={{ region }}{% assign type_array = type | split: ',' %}{% for t in type_array %}&types={{ t }}{% endfor %}{% if area != '' %}&area={{ area }}{% endif %}"
+polling_url: "https://openerz.metaodi.ch/api/calendar.json?region={{ region }}&start={{ 'now' | date: '%Y-%m-%d' }}{% if area != '' %}&area={{ area }}{% endif %}&limit=300"
 polling_headers: ''
 polling_body: ''
 id: 224394
@@ -13,10 +13,6 @@ custom_fields:
   field_type: string
   name: Region
   description: Garbage pickup region
-- keyname: type
-  field_type: string
-  name: Type
-  description: Type of garbage
 - keyname: area
   field_type: string
   name: Area

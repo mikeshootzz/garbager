@@ -9,8 +9,7 @@ watch:
 # values of custom fields (defined in src/settings.yml)
 custom_fields:
   region: zurich
-  type: paper,cardboard,organic,waste
-  area: ''
+  area: ""
 
 # override variables
 variables:
