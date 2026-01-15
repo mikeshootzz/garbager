@@ -10,6 +10,7 @@ watch:
 custom_fields:
   region: zurich
   type: paper,cardboard,organic,waste
+  area: ''
 
 # override variables
 variables:
