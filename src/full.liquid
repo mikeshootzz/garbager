@@ -1,0 +1,46 @@
+{% assign sorted = result | sort: 'date' %}
+{% assign now = 'now' | date: "%Y-%m-%d" %}
+
+<div class="layout layout--col gap--space-between">
+  {% comment %}Next Collection - Big{% endcomment %}
+  <div class="grid">
+    <div class="item">
+      {% assign found = false %}
+      {% for item in sorted %}
+        {% if item.date >= now and found == false %}
+          <div class="content">
+            <span class="value value--xxxlarge value--tnums">{{ item.date | date: '%d.%m' }}</span>
+            <span class="label">{{ item.waste_type | capitalize }}</span>
+          </div>
+          {% assign found = true %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  {% comment %}Next 3 upcoming - single row{% endcomment %}
+  <div class="grid grid--3col">
+    {% assign count = 0 %}
+    {% for item in sorted %}
+      {% if item.date >= now and count > 0 and count < 4 %}
+        <div class="item">
+          <div class="content">
+            <span class="value value--tnums value--large">{{ item.date | date: '%d.%m' }}</span>
+            <span class="label">{{ item.waste_type | capitalize }}</span>
+          </div>
+        </div>
+      {% endif %}
+      {% if item.date >= now %}
+        {% assign count = count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<div class="title_bar">
+  <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
+  <span class="title">Garbage Collection</span>
+  <span class="instance">{{ 'now' | date: '%d.%m.%Y' }}</span>
+</div>
