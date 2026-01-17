@@ -8,13 +8,34 @@
     {% for item in sorted %}
       {% if item.date >= now and found == false %}
         {% assign waste_type = item.waste_type | downcase %}
-        {% if waste_type contains 'general' or waste_type contains 'trash' %}
-          {% assign bar_emphasis = 'item--emphasis-3' %}
-        {% elsif waste_type contains 'recycl' or waste_type contains 'paper' %}
-          {% assign bar_emphasis = 'item--emphasis-2' %}
-        {% else %}
-          {% assign bar_emphasis = 'item--emphasis-1' %}
-        {% endif %}
+        {% case waste_type %}
+          {% when 'bulky_goods' %}
+            {% assign bar_emphasis = 'item--emphasis-3' %}
+          {% when 'cardboard' %}
+            {% assign bar_emphasis = 'item--emphasis-2' %}
+          {% when 'chipping_service' %}
+            {% assign bar_emphasis = 'item--emphasis-1' %}
+          {% when 'incombustibles' %}
+            {% assign bar_emphasis = 'item--emphasis-3' %}
+          {% when 'metal' %}
+            {% assign bar_emphasis = 'item--emphasis-2' %}
+          {% when 'mobile' %}
+            {% assign bar_emphasis = 'item--emphasis-1' %}
+          {% when 'oekibus' %}
+            {% assign bar_emphasis = 'item--emphasis-3' %}
+          {% when 'organic' %}
+            {% assign bar_emphasis = 'item--emphasis-2' %}
+          {% when 'paper' %}
+            {% assign bar_emphasis = 'item--emphasis-1' %}
+          {% when 'special' %}
+            {% assign bar_emphasis = 'item--emphasis-3' %}
+          {% when 'textile' %}
+            {% assign bar_emphasis = 'item--emphasis-2' %}
+          {% when 'waste' %}
+            {% assign bar_emphasis = 'item--emphasis-1' %}
+          {% else %}
+            {% assign bar_emphasis = 'item--emphasis-1' %}
+        {% endcase %}
 
         <div class="item {{ bar_emphasis }}">
           <div class="meta"></div>
@@ -39,13 +60,34 @@
           {% assign key = item.date | append: '-' | append: item.waste_type %}
           {% unless seen contains key %}
             {% assign waste_type = item.waste_type | downcase %}
-            {% if waste_type contains 'general' or waste_type contains 'trash' %}
-              {% assign bar_emphasis = 'item--emphasis-3' %}
-            {% elsif waste_type contains 'recycl' or waste_type contains 'paper' %}
-              {% assign bar_emphasis = 'item--emphasis-2' %}
-            {% else %}
-              {% assign bar_emphasis = 'item--emphasis-1' %}
-            {% endif %}
+            {% case waste_type %}
+              {% when 'bulky_goods' %}
+                {% assign bar_emphasis = 'item--emphasis-3' %}
+              {% when 'cardboard' %}
+                {% assign bar_emphasis = 'item--emphasis-2' %}
+              {% when 'chipping_service' %}
+                {% assign bar_emphasis = 'item--emphasis-1' %}
+              {% when 'incombustibles' %}
+                {% assign bar_emphasis = 'item--emphasis-3' %}
+              {% when 'metal' %}
+                {% assign bar_emphasis = 'item--emphasis-2' %}
+              {% when 'mobile' %}
+                {% assign bar_emphasis = 'item--emphasis-1' %}
+              {% when 'oekibus' %}
+                {% assign bar_emphasis = 'item--emphasis-3' %}
+              {% when 'organic' %}
+                {% assign bar_emphasis = 'item--emphasis-2' %}
+              {% when 'paper' %}
+                {% assign bar_emphasis = 'item--emphasis-1' %}
+              {% when 'special' %}
+                {% assign bar_emphasis = 'item--emphasis-3' %}
+              {% when 'textile' %}
+                {% assign bar_emphasis = 'item--emphasis-2' %}
+              {% when 'waste' %}
+                {% assign bar_emphasis = 'item--emphasis-1' %}
+              {% else %}
+                {% assign bar_emphasis = 'item--emphasis-1' %}
+            {% endcase %}
 
             <div class="item {{ bar_emphasis }}">
               <div class="meta"></div>
