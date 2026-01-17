@@ -1,0 +1,75 @@
+{% assign sorted = result | sort: 'date' %}
+{% assign now = 'now' | date: "%Y-%m-%d" %}
+
+<div class="view view--half_horizontal">
+  <div class="layout layout--row gap">
+    {% comment %}Next Collection - Left Side{% endcomment %}
+    {% assign found = false %}
+    {% for item in sorted %}
+      {% if item.date >= now and found == false %}
+        {% assign waste_type = item.waste_type | downcase %}
+        {% if waste_type contains 'general' or waste_type contains 'trash' %}
+          {% assign bar_emphasis = 'item--emphasis-3' %}
+        {% elsif waste_type contains 'recycl' or waste_type contains 'paper' %}
+          {% assign bar_emphasis = 'item--emphasis-2' %}
+        {% else %}
+          {% assign bar_emphasis = 'item--emphasis-1' %}
+        {% endif %}
+
+        <div class="item {{ bar_emphasis }}">
+          <div class="meta"></div>
+          <div class="content gap--xsmall">
+            <span class="label label--small">Next Pickup</span>
+            <div class="flex flex--row gap flex--center-y">
+              <span class="value value--xxlarge value--tnums">{{ item.date | date: '%d' }}</span>
+              <div class="flex flex--col">
+                <span class="value">{{ item.date | date: '%b' }}</span>
+                <span class="label">{{ item.waste_type | capitalize }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% assign found = true %}
+      {% endif %}
+    {% endfor %}
+
+    <div class="divider--v"></div>
+
+    {% comment %}Upcoming - Right Side 2x2 Grid{% endcomment %}
+    <div class="grid grid--cols-2 gap--xsmall">
+      {% assign count = 0 %}
+      {% assign seen = '' %}
+      {% for item in sorted %}
+        {% if item.date >= now and count < 4 %}
+          {% assign key = item.date | append: '-' | append: item.waste_type %}
+          {% unless seen contains key %}
+            {% assign waste_type = item.waste_type | downcase %}
+            {% if waste_type contains 'general' or waste_type contains 'trash' %}
+              {% assign bar_emphasis = 'item--emphasis-3' %}
+            {% elsif waste_type contains 'recycl' or waste_type contains 'paper' %}
+              {% assign bar_emphasis = 'item--emphasis-2' %}
+            {% else %}
+              {% assign bar_emphasis = 'item--emphasis-1' %}
+            {% endif %}
+
+            <div class="item {{ bar_emphasis }}">
+              <div class="meta"></div>
+              <div class="content gap--xsmall">
+                <span class="value value--small value--tnums">{{ item.date | date: '%d.%m' }}</span>
+                <span class="label label--small">{{ item.waste_type | capitalize }}</span>
+              </div>
+            </div>
+            {% assign seen = seen | append: key | append: ',' %}
+            {% assign count = count | plus: 1 %}
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="title_bar">
+  <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
+  <span class="title">Garbage</span>
+  <span class="instance">{{ 'now' | date: '%d.%m' }}</span>
+</div>
