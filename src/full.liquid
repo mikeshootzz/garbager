@@ -16,51 +16,72 @@
 
 {% assign upcoming_by_type = upcoming_by_type | remove_last: ',' | split: ',' %}
 
-<div class="layout layout--col gap--space-between">
-  {% comment %}Next Collection - Big{% endcomment %}
-  <div class="grid">
-    <div class="item">
-      {% assign found = false %}
-      {% for item in sorted %}
-        {% if item.date >= now and found == false %}
-          <div class="content">
+<div class="view view--full">
+  <div class="layout layout--col gap--space-between">
+    {% comment %}Next Collection - Hero{% endcomment %}
+    {% assign found = false %}
+    {% for item in sorted %}
+      {% if item.date >= now and found == false %}
+        {% assign waste_type = item.waste_type | downcase %}
+        {% if waste_type contains 'general' or waste_type contains 'trash' %}
+          {% assign bar_emphasis = 'item--emphasis-3' %}
+        {% elsif waste_type contains 'recycl' or waste_type contains 'paper' %}
+          {% assign bar_emphasis = 'item--emphasis-2' %}
+        {% else %}
+          {% assign bar_emphasis = 'item--emphasis-1' %}
+        {% endif %}
+
+        <div class="item {{ bar_emphasis }}">
+          <div class="meta"></div>
+          <div class="content gap--small">
             <span class="label">Next Pickup</span>
-            <span class="value value--xxxlarge value--tnums">{{ item.date | date: '%d.%m' }}</span>
-            <span class="value value--xlarge">{{ item.waste_type | capitalize }}</span>
+            <div class="flex flex--row gap--medium flex--center-y">
+              <span class="value value--xxxlarge value--tnums">{{ item.date | date: '%d' }}</span>
+              <div class="flex flex--col">
+                <span class="value value--xlarge">{{ item.date | date: '%b' }}</span>
+                <span class="title title--small">{{ item.waste_type | capitalize }}</span>
+              </div>
+            </div>
           </div>
-          {% assign found = true %}
+        </div>
+        {% assign found = true %}
+      {% endif %}
+    {% endfor %}
+
+    <div class="divider"></div>
+
+    {% comment %}Upcoming - Compact Grid{% endcomment %}
+    <div class="grid grid--cols-2 gap--small">
+      {% assign count = 0 %}
+      {% assign seen = '' %}
+      {% for item in sorted %}
+        {% if item.date >= now and count < 4 %}
+          {% assign key = item.date | append: '-' | append: item.waste_type %}
+          {% unless seen contains key %}
+            {% assign waste_type = item.waste_type | downcase %}
+            {% if waste_type contains 'general' or waste_type contains 'trash' %}
+              {% assign bar_emphasis = 'item--emphasis-3' %}
+            {% elsif waste_type contains 'recycl' or waste_type contains 'paper' %}
+              {% assign bar_emphasis = 'item--emphasis-2' %}
+            {% else %}
+              {% assign bar_emphasis = 'item--emphasis-1' %}
+            {% endif %}
+
+            <div class="item {{ bar_emphasis }}">
+              <div class="meta"></div>
+              <div class="content gap--xsmall">
+                <div class="flex flex--row gap--small flex--center-y">
+                  <span class="value value--tnums">{{ item.date | date: '%d.%m' }}</span>
+                  <span class="description">{{ item.date | date: '%a' }}</span>
+                </div>
+                <span class="label label--small">{{ item.waste_type | capitalize }}</span>
+              </div>
+            </div>
+            {% assign seen = seen | append: key | append: ',' %}
+            {% assign count = count | plus: 1 %}
+          {% endunless %}
         {% endif %}
       {% endfor %}
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  {% comment %}Upcoming Schedule - Timeline{% endcomment %}
-  <div class="grid">
-    <div class="item">
-      <div class="content">
-        <span class="label">Upcoming Schedule</span>
-        <div class="grid grid--3col" style="margin-top: 0.5em;">
-          {% assign count = 0 %}
-          {% assign seen = '' %}
-          {% for item in sorted %}
-            {% if item.date >= now and count < 6 %}
-              {% assign key = item.date | append: '-' | append: item.waste_type %}
-              {% unless seen contains key %}
-                <div class="item">
-                  <div class="content">
-                    <span class="value value--small value--tnums">{{ item.date | date: '%d.%m' }}</span>
-                    <span class="label label--xsmall">{{ item.waste_type | capitalize }}</span>
-                  </div>
-                </div>
-                {% assign seen = seen | append: key | append: ',' %}
-                {% assign count = count | plus: 1 %}
-              {% endunless %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
     </div>
   </div>
 </div>
