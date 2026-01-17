@@ -1,21 +1,21 @@
 ---
 strategy: polling
-no_screen_padding: 'no'
-dark_mode: 'no'
-static_data: ''
+no_screen_padding: "no"
+dark_mode: "no"
+static_data: ""
 polling_verb: get
-polling_url: "https://openerz.metaodi.ch/api/calendar.json?region={{ region }}&start={{ 'now' | date: '%Y-%m-%d' }}{% if area != '' %}&area={{ area }}{% endif %}&limit=300"
-polling_headers: ''
-polling_body: ''
+polling_url: "https://openerz.metaodi.ch/api/calendar.json?region={{ region }}&start={{ 'now' | date: '%Y-%m-%d' }}{% if area != '' %}&area={{ area }}{% endif %}&limit=10"
+polling_headers: ""
+polling_body: ""
 id: 224394
 custom_fields:
-- keyname: region
-  field_type: string
-  name: Region
-  description: Garbage pickup region
-- keyname: area
-  field_type: string
-  name: Area
-  description: Optional area within the region (e.g. a, b, c) - leave empty if not needed
+  - keyname: region
+    field_type: string
+    name: Region
+    description: Garbage pickup region
+  - keyname: area
+    field_type: string
+    name: Area
+    description: Optional area within the region (e.g. a, b, c) - leave empty if not needed
 name: Garbager
 refresh_interval: 1440
